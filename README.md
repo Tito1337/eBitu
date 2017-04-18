@@ -1,3 +1,2 @@
 # eBitu
-<h1>School project</h1>
-
+See app description in [Documentation/Applications mobiles – eBitu.pdf]
