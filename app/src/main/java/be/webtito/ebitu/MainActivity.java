@@ -17,7 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +40,44 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*listView = (ListView) findViewById(R.id.listView1);
+        String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
+                            "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // l'index de l'item dans notre ListView
+                int itemPosition = position;
+
+                // On récupère le texte de l'item cliqué
+                String itemValue = (String) listView
+                        .getItemAtPosition(position);
+
+                // On affiche ce texte avec un Toast
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Position :" + itemPosition + "  ListItem : "
+                                + itemValue, Toast.LENGTH_LONG).show();
+            }
+
+        });*/
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
     }
 
@@ -119,8 +157,58 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            ListView listView = (ListView) rootView.findViewById(R.id.listView1);
+            int listID = getArguments().getInt(ARG_SECTION_NUMBER);
+            if(listID == 1) {
+                String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
+                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
+                        android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
+
+                listView.setAdapter(adapter);
+
+            } else if(listID == 2) {
+                String[] Chants = {"Favori 1", "Favori 2", "Favori 3"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
+                        android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
+
+                listView.setAdapter(adapter);
+
+            } else {
+                String[] Chants = {"HISTORIQUE Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
+                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
+                        android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
+
+                listView.setAdapter(adapter);
+
+            }
+
+            /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+
+                    // l'index de l'item dans notre ListView
+                    int itemPosition = position;
+
+                    // On récupère le texte de l'item cliqué
+                    String itemValue = (String) listView
+                            .getItemAtPosition(position);
+
+                    // On affiche ce texte avec un Toast
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Position :" + itemPosition + "  ListItem : "
+                                    + itemValue, Toast.LENGTH_LONG).show();
+                }
+
+            });*/
+
             return rootView;
         }
     }
