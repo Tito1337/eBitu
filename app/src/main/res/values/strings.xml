@@ -5,4 +5,27 @@
     <string name="about">À propos</string>
     <string name="master">Devenir maître de champ</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_nearby">Maître de chant</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="nearby_menu">Maître de chant</string>
+    <string name="nearby_name_prompt">Nom à afficher</string>
+    <string name="nearby_connect_button">Devenir maître de chant</string>
+    <string name="nearby_help">eBitu propose un mode maître de chant :
+        une fois activé, ton téléphone se signalera aux autres personnes utilisant l\'application
+        à proximité. Une fois qu\'ils t\'auront accepté comme maître de chant, tu pourras charger
+        automatiquement le prochain chant sur leur écran !
+    </string>
 </resources>
