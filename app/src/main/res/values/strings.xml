@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">eBitu</string>
-    <string name="title_activity_start">MainActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_activity_start">eBitu</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="about">À propos</string>
+    <string name="master">Devenir maître de champ</string>
     <string name="section_format">Hello World from section: %1$d</string>
 </resources>

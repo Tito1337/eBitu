@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search, menu);
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -150,11 +152,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Chants";
                 case 1:
-                    return "SECTION 2";
+                    return "Favoris";
                 case 2:
-                    return "SECTION 3";
+                    return "Historique";
             }
             return null;
         }
