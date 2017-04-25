@@ -26,6 +26,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
     /**
      * DB Testing..
@@ -56,8 +58,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //DB testing {
         myDB = new DBHelper(this);
-
-       Cursor res = myDB.getTitlesList();
+        try {
+            myDB.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        myDB.openDataBase();
+        Cursor res = myDB.getTitlesList();
  /*       if(res.getCount() == 0) {
             showMessage("Erreur","Pas de chants disponible");
             return;
@@ -131,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
     }
-
+//DB Debugging
     public void showMessage(String title, String msg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);

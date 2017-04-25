@@ -3,6 +3,7 @@ package be.webtito.ebitu;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -104,6 +105,24 @@ public class DBHelper extends SQLiteOpenHelper {
         myOutput.flush();
         myOutput.close();
         myInput.close();
+
+    }
+
+    public void openDataBase() throws SQLException {
+
+        //ouvrir la db
+        String myPath = DATABASE_PATH + DATABASE_NAME;
+        myDatabase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+
+    }
+
+    @Override
+    public synchronized void close() {
+
+        if(myDatabase != null)
+            myDatabase.close();
+
+        super.close();
 
     }
 
