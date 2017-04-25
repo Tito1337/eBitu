@@ -28,4 +28,12 @@
         à proximité. Une fois qu\'ils t\'auront accepté comme maître de chant, tu pourras charger
         automatiquement le prochain chant sur leur écran !
     </string>
+
+    <string name="title_activity_song">Chant</string>
+    <string name="title_activity_about">AboutActivity</string>
+
+    <string name="authors">Auteurs :\nAIGLON Benjamin\nDE WOLF Christophe\nDIDOUH Mohamed\nWAUTHIER Gaetan\n  </string>
+    <string name="version">Version : 1.0\n</string>
+    <string name="date">Date : Avril 2017</string>
+
 </resources>

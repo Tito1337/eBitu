@@ -123,11 +123,19 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent nextScreen = new Intent(this, SongActivity.class);
+            startActivity(nextScreen);
             return true;
         }
 
         if (id == R.id.action_nearby) {
             Intent nextScreen = new Intent(this, NearbyActivity.class);
+            startActivity(nextScreen);
+            return true;
+        }
+
+        if(id==R.id.about){
+            Intent nextScreen = new Intent(this, AboutActivity.class);
             startActivity(nextScreen);
             return true;
         }

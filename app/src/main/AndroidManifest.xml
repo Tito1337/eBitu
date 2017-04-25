@@ -19,14 +19,33 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".NearbyActivity"
+            android:exported="true"
             android:label="@string/title_activity_nearby"
-            android:parentActivityName=".MainActivity"
-            android:exported="true">
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.webtito.ebitu.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SongActivity"
+            android:exported="true"
+            android:label="@string/title_activity_song"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.webtito.ebitu.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:exported="true"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="be.webtito.ebitu.MainActivity" />
