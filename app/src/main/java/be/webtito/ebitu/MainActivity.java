@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
         //DB testing {
         myDB = new DBHelper(this);
 
-        Cursor res = myDB.getTitlesList();
-        if(res.getCount() == 0) {
+       Cursor res = myDB.getTitlesList();
+ /*       if(res.getCount() == 0) {
             showMessage("Erreur","Pas de chants disponible");
             return;
-        }
+        }*/
         StringBuffer buffer = new StringBuffer();
         while(res.moveToNext()){
             buffer.append("_id : "+ res.getString(0)+"\n");
