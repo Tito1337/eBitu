@@ -1,9 +1,11 @@
 package be.webtito.ebitu;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
      * DB Testing..
      */
     DBHelper myDB;
+
+
      /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -52,6 +56,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //DB testing {
         myDB = new DBHelper(this);
+
+        Cursor res = myDB.getTitlesList();
+        if(res.getCount() == 0) {
+            showMessage("Erreur","Pas de chants disponible");
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+        while(res.moveToNext()){
+            buffer.append("_id : "+ res.getString(0)+"\n");
+            buffer.append("Title : "+ res.getString(1)+"\n");
+            buffer.append("Lyric : "+ res.getString(2)+"\n");
+            buffer.append("Date_Selected : "+ res.getString(3)+"\n");
+            buffer.append("Faved : "+ res.getString(4)+"\n\n");
+        }
+            //Afficher les données
+        showMessage("Données",buffer.toString());
+
+
         //} DB testing
 
         /*listView = (ListView) findViewById(R.id.listView1);
@@ -110,6 +132,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void showMessage(String title, String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        builder.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,8 +213,11 @@ public class MainActivity extends AppCompatActivity {
             ListView listView = (ListView) rootView.findViewById(R.id.listView1);
             int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
+
                 String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
                         "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
+                /*String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
+                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};*/
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
 
