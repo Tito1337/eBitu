@@ -8,7 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by Momed on 23/04/2017.
@@ -21,11 +24,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final Context myContext;
 
     public static final String TABLE_NAME = "eBitu_Chants";
-    public static final String COL_1 = "ID";
-    public static final String COL_2 = "Title";
-    public static final String COL_3 = "Lyric";
-    public static final String COL_4 = "Date_Selected";
-    public static final String COL_5 = "Faved";
+//    public static final String COL_1 = "ID";
+//    public static final String COL_2 = "Title";
+//    public static final String COL_3 = "Lyric";
+//    public static final String COL_4 = "Date_Selected";
+//    public static final String COL_5 = "Faved";
 
 
 /*Constructeur*/
@@ -152,7 +155,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getTitlesList() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+ TABLE_NAME,null);
+        Cursor res = db.rawQuery("select Title from "+ TABLE_NAME,null);
         return res;
     }
 }

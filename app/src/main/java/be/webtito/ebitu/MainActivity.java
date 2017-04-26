@@ -71,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
         }*/
         StringBuffer buffer = new StringBuffer();
         while(res.moveToNext()){
-            buffer.append("_id : "+ res.getString(0)+"\n");
-            buffer.append("Title : "+ res.getString(1)+"\n");
-            buffer.append("Lyric : "+ res.getString(2)+"\n");
+            //buffer.append("_id : "+ res.getString(0)+"\n");
+            buffer.append("Title : "+ res.getString(0)+"\n");
+          /*  buffer.append("Lyric : "+ res.getString(2)+"\n");
             buffer.append("Date_Selected : "+ res.getString(3)+"\n");
-            buffer.append("Faved : "+ res.getString(4)+"\n\n");
+            buffer.append("Faved : "+ res.getString(4)+"\n\n");*/
         }
             //Afficher les données
         showMessage("Données",buffer.toString());
