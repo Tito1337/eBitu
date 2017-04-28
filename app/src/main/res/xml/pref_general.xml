@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
         android:defaultValue="true"
@@ -29,5 +30,20 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_add_friends_to_messages" />
+
+    <com.kizitonwose.colorpreference.ColorPreference
+        android:defaultValue="@color/colorPrimary"
+        android:key="color_text"
+        android:title="Couleur du texte"
+        app:colorChoices="@array/color_choices"
+        app:colorShape="circle" />
+
+
+    <com.kizitonwose.colorpreference.ColorPreference
+        android:defaultValue="@color/colorPrimary"
+        android:key="color_background"
+        android:title="Couleur du fond"
+        app:colorChoices="@array/color_choices"
+        app:colorShape="circle" />
 
 </PreferenceScreen>
