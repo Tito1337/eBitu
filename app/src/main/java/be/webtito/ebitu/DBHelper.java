@@ -156,10 +156,24 @@ public class DBHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getAllSongs() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_NAME, null);
+    }
+
+
     public Cursor getChant(String chantTitle) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor chant = db.rawQuery("select Lyric from "+ TABLE_NAME +" where Title='"+ chantTitle+"'",null);
 
         return chant;
     }
+
+    public Cursor getChantByID(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor chant = db.rawQuery("SELECT * FROM "+ TABLE_NAME +" WHERE _id='"+id+"'", null);
+        return chant;
+    }
+
+
 }

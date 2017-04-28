@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -104,26 +105,37 @@ public class NearbyHandler implements GoogleApiClient.ConnectionCallbacks,
             @Override
             public void onFound(final Message message) {
                 // Called when a new message is found.
-                NearbyMessage nMessage = NearbyMessage.fromNearbyMessage(message);
+                final NearbyMessage nMessage = NearbyMessage.fromNearbyMessage(message);
                 //mNearbyMessagesArrayAdapter.add(messageBody);
 
-                new AlertDialog.Builder(mActivity)
-                        .setTitle(R.string.nearby_new_publisher_title)
-                        .setMessage("Nous avons détecté un nouveau maître de chant !\n\nNom: " + nMessage.getSender() + "\n\nAccepte-tu ce maître de chant ?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Intent nextScreen = new Intent(mActivity.getApplicationContext(), MainActivity.class);
-                                mActivity.startActivity(nextScreen);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
+                boolean ignore = false;
+                if(mActivity instanceof SongActivity) {
+                    SongActivity song = (SongActivity) mActivity;
+                    if(song.getSongID() == nMessage.getSong()) {
+                        ignore = true;
+                    }
+                }
+
+                if(!ignore) {
+                    new AlertDialog.Builder(mActivity)
+                            .setTitle(R.string.nearby_new_publisher_title)
+                            .setMessage(nMessage.getSender() + " propose de chanter \"" + nMessage.getTitle() + "\" \n\nVeux-tu charger ce chant ?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Intent nextScreen = new Intent(mActivity.getApplicationContext(), SongActivity.class);
+                                    nextScreen.putExtra("id", nMessage.getSong());
+                                    mActivity.startActivity(nextScreen);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
                             /*Intent nextScreen = new Intent(mActivity.this, MainActivity.class);
                             startActivity(nextScreen);*/
-                            }
-                        })
-                        .show();
+                                }
+                            })
+                            .show();
+                }
             }
 
             @Override
@@ -156,9 +168,9 @@ public class NearbyHandler implements GoogleApiClient.ConnectionCallbacks,
         }, 1000);
     }
 
-    public void publish_song(int id) {
+    public void publish_song(String title, int id) {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            publish(id);
+            publish(title, id);
         } else {
             // TODO
         }
@@ -233,7 +245,7 @@ public class NearbyHandler implements GoogleApiClient.ConnectionCallbacks,
                 });
     }
 
-    private void publish(int song) {
+    private void publish(String title, int id) {
         Log.i(TAG, "Publishing");
         PublishOptions options = new PublishOptions.Builder()
                 .setStrategy(PUB_SUB_STRATEGY)
@@ -245,14 +257,17 @@ public class NearbyHandler implements GoogleApiClient.ConnectionCallbacks,
                     }
                 }).build();
 
-        mPubMessage = NearbyMessage.newNearbyMessage(mUUID, "Maître de chant", "Titre de chanson", song);
+        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(mActivity);
+        String name = mPrefs.getString("settings_display_name", "Anonyme");
+
+        mPubMessage = NearbyMessage.newNearbyMessage(mUUID, name, title, id);
 
         Nearby.Messages.publish(mGoogleApiClient, mPubMessage, options)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
                         if (status.isSuccess()) {
-                            Log.i(TAG, "Published successfully.");
+                            logAndShowSnackbar("Le chant est maintenant proposé aux utilisateurs d'eBitu à proximité !");
                         } else {
                             logAndShowSnackbar("Could not publish, status = " + status);
                         }

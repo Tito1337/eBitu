@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
 
     private boolean mCurrentNightMode;
+    private NearbyHandler mNearbyHandler;
 
 
     @Override
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         myDB = new DBHelper(this);
+
+        mNearbyHandler = new NearbyHandler(this);
 
         /*listView = (ListView) findViewById(R.id.listView1);
         String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
@@ -221,23 +224,19 @@ public class MainActivity extends AppCompatActivity {
             }
             myDB.openDataBase();
             Cursor res = myDB.getTitlesList();
- /*       if(res.getCount() == 0) {
-            showMessage("Erreur","Pas de chants disponible");
-            return;
-        }*/
-/*            StringBuffer buffer = new StringBuffer(); */
+
             res.moveToFirst();
             if(res.getCount() == 0) {
                 Toast.makeText(getActivity(), "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
-
             }
             else{
                 do{
                     //buffer.append("Title : "+ res.getString(0)+"\n");
                     myChants.add(res.getString(0));
                     Log.d("myChants",res.getString(res.getColumnIndex("Title")));
-                }while(res.moveToNext());
+                } while(res.moveToNext());
             }
+            res.moveToFirst();
 
             /**/
             //Afficher les données
@@ -251,21 +250,14 @@ public class MainActivity extends AppCompatActivity {
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
             final ListView listView = (ListView) rootView.findViewById(R.id.listView1);
+            final Cursor allSongs = myDB.getAllSongs();
+            String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
+            int[] toViewIDs = new int[] {android.R.id.text1};
+            final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
 
             int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
-
-               /* String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
-                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};*/
-                /*String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
-                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};*/
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, myChants);
-
-                listView.setAdapter(adapter);
-
-
+                listView.setAdapter(allSongsAdapter);
             } else if(listID == 2) {
                 String[] Chants = {"Favori 1", "Favori 2", "Favori 3"};
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
@@ -291,21 +283,11 @@ public class MainActivity extends AppCompatActivity {
                     // TODO Auto-generated method stub
                     listView.invalidate();
 
-                    String ChantTitle = myChants.get(position);
-                    //Class activityClass =
-                    //showMessage("Données",myDB.getChant(ChantTitle));
-
-
-                    Cursor res = myDB.getChant(ChantTitle);
-                    res.moveToFirst();
-                    //Toast.makeText(getActivity(), res.getString(0), Toast.LENGTH_SHORT).show();
-                    //Log.d("chantest",res.getString(0));
+                    Cursor song = (Cursor) allSongsAdapter.getItem(position);
 
                     Intent intent = new Intent(getActivity(), SongActivity.class);
-                    intent.putExtra("chant", res.getString(0));
+                    intent.putExtra("id", song.getInt(0));
                     startActivity(intent);
-
-
                 }
             });
 

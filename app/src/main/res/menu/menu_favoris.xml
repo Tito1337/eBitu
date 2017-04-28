@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_nearby"
+        android:orderInCategory="100"
+        android:title="Share"
+        app:actionViewClass="android.support.v7.widget"
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_favoris"
         android:orderInCategory="200"
         android:title="Favoris"

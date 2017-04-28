@@ -3,6 +3,7 @@ package be.webtito.ebitu;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -125,6 +126,13 @@ public class SettingsActivity extends AppCompatActivity {
                 nightModeCheckBox.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference arg0, Object checkObject) {
+                        // Invert text and background
+                        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                        int textColor = mPrefs.getInt("settings_color_text", R.color.black);
+                        int backColor = mPrefs.getInt("settings_color_background", R.color.white);
+                        mPrefs.edit().putInt("settings_color_text", backColor).commit();
+                        mPrefs.edit().putInt("settings_color_background", textColor).commit();
+
                         getActivity().recreate();
                         return true;
                     }

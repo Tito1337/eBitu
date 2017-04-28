@@ -17,18 +17,18 @@
 
 
     <com.kizitonwose.colorpreference.ColorPreference
-        android:defaultValue="@color/colorPrimary"
+        android:defaultValue="@color/black"
         android:key="settings_color_text"
         android:title="@string/settings_color_text_title"
-        app:colorChoices="@array/color_references"
+        app:colorChoices="@array/color_references_text"
         app:colorShape="circle" />
 
 
     <com.kizitonwose.colorpreference.ColorPreference
-        android:defaultValue="@color/colorPrimary"
+        android:defaultValue="@color/white"
         android:key="settings_color_background"
         android:title="@string/settings_color_background_title"
-        app:colorChoices="@array/color_references"
+        app:colorChoices="@array/color_references_back"
         app:colorShape="circle" />
 
 </PreferenceScreen>
