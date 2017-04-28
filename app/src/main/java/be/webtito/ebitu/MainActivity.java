@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,13 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     /**
      * DB Testing..
      */
-    DBHelper myDB;
-
+    static DBHelper myDB;
+    static ArrayList<String> myChants = new ArrayList<String>();
 
      /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -52,36 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //DB testing {
         myDB = new DBHelper(this);
-        try {
-            myDB.createDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        myDB.openDataBase();
-        Cursor res = myDB.getTitlesList();
- /*       if(res.getCount() == 0) {
-            showMessage("Erreur","Pas de chants disponible");
-            return;
-        }*/
-        StringBuffer buffer = new StringBuffer();
-        while(res.moveToNext()){
-            //buffer.append("_id : "+ res.getString(0)+"\n");
-            buffer.append("Title : "+ res.getString(0)+"\n");
-          /*  buffer.append("Lyric : "+ res.getString(2)+"\n");
-            buffer.append("Date_Selected : "+ res.getString(3)+"\n");
-            buffer.append("Faved : "+ res.getString(4)+"\n\n");*/
-        }
-            //Afficher les données
-        showMessage("Données",buffer.toString());
-
-
-        //} DB testing
 
         /*listView = (ListView) findViewById(R.id.listView1);
         String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
@@ -139,12 +118,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 //DB Debugging
-    public void showMessage(String title, String msg){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public static void showMessage(String title, String msg){
+/*        AlertDialog.Builder builder = new AlertDialog.Builder();
         builder.setCancelable(true);
         builder.setTitle(title);
         builder.setMessage(msg);
-        builder.show();
+        builder.show();*/
     }
 
     @Override
@@ -213,22 +192,50 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            //DB testing {
+
+            try {
+                myDB.createDataBase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            myDB.openDataBase();
+            Cursor res = myDB.getTitlesList();
+ /*       if(res.getCount() == 0) {
+            showMessage("Erreur","Pas de chants disponible");
+            return;
+        }*/
+            StringBuffer buffer = new StringBuffer();
+            res.moveToFirst();
+            do{
+                buffer.append("Title : "+ res.getString(0)+"\n");
+                myChants.add(res.getString(0));
+            }while(res.moveToNext());
+            //Afficher les données
+            //showMessage("Données",buffer.toString());
+            showMessage("Données",myChants.get(0));
+            // populateListView();
+
+            //} DB testing
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
-            ListView listView = (ListView) rootView.findViewById(R.id.listView1);
+            final ListView listView = (ListView) rootView.findViewById(R.id.listView1);
+
             int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
 
-                String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
-                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
+               /* String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
+                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};*/
                 /*String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
                         "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};*/
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
+                        android.R.layout.simple_list_item_1, android.R.id.text1, myChants);
 
                 listView.setAdapter(adapter);
+
 
             } else if(listID == 2) {
                 String[] Chants = {"Favori 1", "Favori 2", "Favori 3"};
@@ -245,9 +252,37 @@ public class MainActivity extends AppCompatActivity {
 
                 listView.setAdapter(adapter);
 
+                adapter.notifyDataSetChanged();
             }
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1,
+                                        int position, long arg3) {
+                    // TODO Auto-generated method stub
+                    listView.invalidate();
+
+
+                    String ChantTitle = myChants.get(position);
+                    //Class activityClass =
+                    //showMessage("Données",myDB.getChant(ChantTitle));
+                    //You could lookup by position, but "name" is more general
+
+                    Cursor res = myDB.getChant(ChantTitle);
+                    res.moveToFirst();
+                    //Toast.makeText(getActivity(), res.getString(0), Toast.LENGTH_SHORT).show();
+                    //Log.d("chantest",res.getString(0));
+
+                    Intent intent = new Intent(getActivity(), SongActivity.class);
+                    intent.putExtra("chant", res.getString(0));
+                    startActivity(intent);
+
+
+                }
+            });
+
+
+/*            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -308,5 +343,16 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    public void populateListView(){
+        Cursor res = myDB.getTitlesList();
+        String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
+        int[] toViewIDs = new int[] {android.R.id.text1};
+        SimpleCursorAdapter myCursorAd;
+        myCursorAd = new SimpleCursorAdapter(getBaseContext(),R.layout.fragment_main, res, fromFieldTitles, toViewIDs,0);
+
+        ListView myList = (ListView) findViewById(R.id.listView1);
+        myList.setAdapter(myCursorAd);
     }
 }

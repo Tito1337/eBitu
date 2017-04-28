@@ -20,15 +20,18 @@ import java.io.OutputStream;
 public class DBHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH = "/data/data/be.webtito.ebitu/databases/";
     private static final String DATABASE_NAME = "eBitu.DB";
+    public static final int DATABASE_VERSION = 1;
+
     private SQLiteDatabase myDatabase;
     private final Context myContext;
 
     public static final String TABLE_NAME = "eBitu_Chants";
-//    public static final String COL_1 = "ID";
-//    public static final String COL_2 = "Title";
-//    public static final String COL_3 = "Lyric";
-//    public static final String COL_4 = "Date_Selected";
-//    public static final String COL_5 = "Faved";
+    public static final String COL_ID_1 = "ID";
+    public static final String COL_Title_2 = "Title";
+    public static final String COL_Lyric_3 = "Lyric";
+    public static final String COL_Date_4 = "Date_Selected";
+    public static final String COL_Fave_5 = "Faved";
+
 
 
 /*Constructeur*/
@@ -132,30 +135,31 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-       // db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,Title TEXT,Lyric TEXT,Date_Selected DATETIME,Faved INTEGER) ");
+        db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,Title TEXT,Lyric TEXT,Date_Selected DATETIME,Faved INTEGER) ");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
         onCreate(db);
     }
 
-    public boolean insertData(String Title, String Lyric, String Date_Selected, String Faved){
-       /* SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2,Title);
-        contentValues.put(COL_3,Lyric);
-        contentValues.put(COL_4,Date_Selected);
-        contentValues.put(COL_5,Faved);
-
-        */
-        return true;
+    public long updateDate(String dateSelected){
+       ContentValues myValues = new ContentValues();
+        myValues.put(COL_Date_4, dateSelected);
+        return myDatabase.insert(TABLE_NAME, null, myValues);
     }
 
     public Cursor getTitlesList() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select Title from "+ TABLE_NAME,null);
         return res;
+    }
+
+    public Cursor getChant(String chantTitle) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor chant = db.rawQuery("select Lyric from "+ TABLE_NAME +" where Title='"+ chantTitle+"'",null);
+
+        return chant;
     }
 }
