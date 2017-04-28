@@ -2,11 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="be.webtito.ebitu.MainActivity">
-    <item
-        android:id="@+id/action_nearby"
-        android:orderInCategory="100"
-        android:title="@string/nearby_menu"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"
