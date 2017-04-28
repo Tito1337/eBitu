@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">eBitu</string>
+    <string name="service_id">be.webtito.ebitu</string>
     <string name="title_activity_start">eBitu</string>
     <string name="action_settings">Paramètres</string>
     <string name="about">À propos</string>
@@ -35,6 +36,9 @@
     <string name="authors">Auteurs :\nAIGLON Benjamin\nDE WOLF Christophe\nDIDOUH Mohamed\nWAUTHIER Gaetan\n  </string>
     <string name="version">Version : 1.0\n</string>
     <string name="date">Date : Avril 2017</string>
+    <string name="nearby_new_publisher_message">Tu es maintenant annoncé comme maître de chant!\n\nMerci d\'attendre que tout le monde se connecte avant de cliquer sur OK.</string>
+    <string name="nearby_new_publisher_title">Maître de chant</string>
+    <string name="nearby_publisher">Maître de chant</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -47,8 +51,8 @@
         based on your message history
     </string>
 
-    <string name="pref_title_display_name">Afficher nom d\'utilisateur</string>
-    <string name="pref_default_display_name">Nom à enregistrer</string>
+    <string name="pref_title_display_name">Mon nom de maître de chant</string>
+    <string name="pref_default_display_name">Maître de chant</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -108,5 +112,6 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_title_night_mode">Mode nuit</string>
 
 </resources>
