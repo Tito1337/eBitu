@@ -3,6 +3,7 @@ package be.webtito.ebitu;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -58,13 +59,16 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
 
+    private boolean mCurrentNightMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(this);
-        if(mPrefs.getBoolean("pref_night_mode", false)) {
+        mCurrentNightMode = mPrefs.getBoolean("pref_night_mode", false);
+        if(mCurrentNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -135,6 +139,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(title);
         builder.setMessage(msg);
         builder.show();*/
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(this);
+        if(mCurrentNightMode != mPrefs.getBoolean("pref_night_mode", false)) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 
     @Override
