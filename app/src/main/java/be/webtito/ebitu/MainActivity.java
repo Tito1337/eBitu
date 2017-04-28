@@ -262,11 +262,10 @@ public class MainActivity extends AppCompatActivity {
                     // TODO Auto-generated method stub
                     listView.invalidate();
 
-
                     String ChantTitle = myChants.get(position);
                     //Class activityClass =
                     //showMessage("Données",myDB.getChant(ChantTitle));
-                    //You could lookup by position, but "name" is more general
+
 
                     Cursor res = myDB.getChant(ChantTitle);
                     res.moveToFirst();
