@@ -19,16 +19,16 @@
     <com.kizitonwose.colorpreference.ColorPreference
         android:defaultValue="@color/colorPrimary"
         android:key="settings_color_text"
-        android:title="Couleur du texte"
-        app:colorChoices="@array/color_choices"
+        android:title="@string/settings_color_text_title"
+        app:colorChoices="@array/color_references"
         app:colorShape="circle" />
 
 
     <com.kizitonwose.colorpreference.ColorPreference
         android:defaultValue="@color/colorPrimary"
         android:key="settings_color_background"
-        android:title="Couleur du fond"
-        app:colorChoices="@array/color_choices"
+        android:title="@string/settings_color_background_title"
+        app:colorChoices="@array/color_references"
         app:colorShape="circle" />
 
 </PreferenceScreen>
