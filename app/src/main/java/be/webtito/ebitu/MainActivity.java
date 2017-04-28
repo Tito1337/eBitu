@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(id==R.id.about){
-            Intent nextScreen = new Intent(this, AboutActivity.class);
+            Intent nextScreen = new Intent(this, SettingsActivity.class);
             startActivity(nextScreen);
             return true;
         }
