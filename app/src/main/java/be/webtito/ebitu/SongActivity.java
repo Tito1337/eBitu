@@ -20,7 +20,18 @@ public class SongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_song);
         isFavorite = false;
         textViewLyrics = (TextView) findViewById(R.id.textViewLyrics);
-        String Lyrics = "Hakuna Matata,\n" +
+        String Lyrics;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                Lyrics= null;
+            } else {
+                Lyrics= extras.getString("chant");
+            }
+        } else {
+            Lyrics= (String) savedInstanceState.getSerializable("chant");
+        }
+     /*   String Lyrics = "Hakuna Matata,\n" +
                 "Mais quelle phrase magnifique\n" +
                 "\n" +
                 "Hakuna Matata,\n" +
@@ -72,14 +83,14 @@ public class SongActivity extends AppCompatActivity {
                 "Philosophie\n" +
                 "Hakuna Matata!\n" +
                 "Hakuna Matata,\n" +
-                "Hakuna Matata,\n";
+                "Hakuna Matata,\n";*/
 
         textViewLyrics.setText(Lyrics);
 
     }
 
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_favoris, menu);
@@ -105,7 +116,7 @@ public class SongActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }
 
 
