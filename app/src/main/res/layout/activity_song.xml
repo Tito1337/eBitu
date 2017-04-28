@@ -24,12 +24,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewLyrics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            </TextView>
+            android:id="@+id/textViewLyrics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </TextView>
+
 
         </LinearLayout>
     </ScrollView>

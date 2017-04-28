@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myDB = new DBHelper(this);
+        //myDB = new DBHelper(this);
 
         /*listView = (ListView) findViewById(R.id.listView1);
         String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
@@ -144,13 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent nextScreen = new Intent(this, SongActivity.class);
-            startActivity(nextScreen);
-            return true;
-        }
-
-        if (id == R.id.action_nearby) {
-            Intent nextScreen = new Intent(this, NearbyActivity.class);
+            Intent nextScreen = new Intent(this, SettingsActivity.class);
             startActivity(nextScreen);
             return true;
         }
@@ -194,26 +188,26 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             //DB testing {
 
-            try {
+            /*try {
                 myDB.createDataBase();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             myDB.openDataBase();
-            Cursor res = myDB.getTitlesList();
+            Cursor res = myDB.getTitlesList();*/
  /*       if(res.getCount() == 0) {
             showMessage("Erreur","Pas de chants disponible");
             return;
         }*/
-            StringBuffer buffer = new StringBuffer();
-            res.moveToFirst();
-            do{
-                buffer.append("Title : "+ res.getString(0)+"\n");
-                myChants.add(res.getString(0));
-            }while(res.moveToNext());
+            //StringBuffer buffer = new StringBuffer();
+            //res.moveToFirst();
+           // do{
+               // buffer.append("Title : "+ res.getString(0)+"\n");
+                //myChants.add(res.getString(0));
+            //}while(res.moveToNext());
             //Afficher les données
             //showMessage("Données",buffer.toString());
-            showMessage("Données",myChants.get(0));
+            //showMessage("Données",myChants.get(0));
             // populateListView();
 
             //} DB testing
@@ -273,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                     //Log.d("chantest",res.getString(0));
 
                     Intent intent = new Intent(getActivity(), SongActivity.class);
-                    intent.putExtra("chant", res.getString(0));
+                    //intent.putExtra("chant", res.getString(0));
                     startActivity(intent);
 
 
