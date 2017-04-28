@@ -2,10 +2,14 @@ package be.webtito.ebitu;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class SongActivity extends AppCompatActivity {
@@ -31,61 +35,15 @@ public class SongActivity extends AppCompatActivity {
         } else {
             Lyrics= (String) savedInstanceState.getSerializable("chant");
         }
-     /*   String Lyrics = "Hakuna Matata,\n" +
-                "Mais quelle phrase magnifique\n" +
-                "\n" +
-                "Hakuna Matata,\n" +
-                "Quel chant fantastique!\n" +
-                "\n" +
-                "Ces mots signifient\n" +
-                "Que tu vivras ta vie,\n" +
-                "Sans aucun souci,\n" +
-                "Philosophie\n" +
-                "Ce très jeune phacochère\n" +
-                "J'étais jeune et phacochère\n" +
-                "Bel organe\n" +
-                "Merci!\n" +
-                "Un jour, quelle horreur\n" +
-                "Il comprit que son odeur\n" +
-                "Au lieu de sentir la fleur\n" +
-                "Soulevait les coeurs.\n" +
-                "\n" +
-                "Mais y'a dans tout cochon\n" +
-                "Un poète qui sommeille.\n" +
-                "Quel martyr\n" +
-                "Quand personne\n" +
-                "Peut plus vous sentir!\n" +
-                "Disgrâce infâme (Parfum d'infâme)\n" +
-                "Inonde mon âme (Oh! Ça pue le drame)\n" +
-                "Je déclenche une tempête (Pitié, arrête!)\n" +
-                "A chaque fois que je ...\n" +
-                "Non Pumbaa, pas devant les enfants!\n" +
-                "Oh! Pardon!\n" +
-                "\n" +
-                "Hakuna Matata,\n" +
-                "Mais quelle phrase magnifique!\n" +
-                "Hakuna Matata,\n" +
-                "Quel chant fantastique!\n" +
-                "Ces mots signifient\n" +
-                "Que tu vivras ta vie,\n" +
-                "Ouais, chante petit!\n" +
-                "\n" +
-                "Sans aucun souci\n" +
-                "Philosophie\n" +
-                "Hakuna Matata!\n" +
-                "Hakuna Matata,\n" +
-                "Hakuna Matata,\n" +
-                "Hakuna Matata,\n" +
-                "Hakuna\n" +
-                "Ces mots signifient\n" +
-                "Que tu vivras ta vie,\n" +
-                "Sans aucun souci,\n" +
-                "Philosophie\n" +
-                "Hakuna Matata!\n" +
-                "Hakuna Matata,\n" +
-                "Hakuna Matata,\n";*/
 
         textViewLyrics.setText(Lyrics);
+
+        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(this);
+        int textColor = mPrefs.getInt("settings_color_text", textViewLyrics.getTextColors().getDefaultColor());
+        int backColor = mPrefs.getInt("settings_color_background", Color.TRANSPARENT);
+        ScrollView songForm = (ScrollView) findViewById(R.id.song_form);
+        textViewLyrics.setTextColor(textColor);
+        songForm.setBackgroundColor(backColor);
 
     }
 
