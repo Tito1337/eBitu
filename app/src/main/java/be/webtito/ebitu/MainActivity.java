@@ -33,7 +33,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -254,26 +256,28 @@ public class MainActivity extends AppCompatActivity {
             String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
             int[] toViewIDs = new int[] {android.R.id.text1};
             final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
-
+            //final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
             int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
                 listView.setAdapter(allSongsAdapter);
             } else if(listID == 2) {
-                String[] Chants = {"Favori 1", "Favori 2", "Favori 3"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
 
-                listView.setAdapter(adapter);
-
+                final Cursor favedSongs = myDB.getAllFavorites();
+                final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, favedSongs, fromFieldTitles, toViewIDs, 0);;
+                listView.setAdapter(favedSongsAdapter);
             } else {
-                String[] Chants = {"HISTORIQUE Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
+/*                String[] Chants = {"HISTORIQUE Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
                         "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
 
                 listView.setAdapter(adapter);
 
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
+
+                final Cursor lastSongs = myDB.getAllByLast();
+                final SimpleCursorAdapter lastSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, lastSongs, fromFieldTitles, toViewIDs, 0);;
+                listView.setAdapter(lastSongsAdapter);
             }
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -284,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     listView.invalidate();
 
                     Cursor song = (Cursor) allSongsAdapter.getItem(position);
+                    updateLastSelected(song);
 
                     Intent intent = new Intent(getActivity(), SongActivity.class);
                     intent.putExtra("id", song.getInt(0));
@@ -354,8 +359,19 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+    public static void updateLastSelected(Cursor song){
+        //Cursor res = myDB.getTitlesList();
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //System.out.println("Current time => " + c.getTime());
+        String dateSelected = df.format(c.getTime());
+       // Log.d("Current time", df.format(c.getTime()));
+        Cursor res = myDB.updateDate(song.getInt(0),dateSelected);
+        res.moveToFirst();
+        res.close();
+    }
 
-    public void populateListView(){
+/*    public void populateListView(){
         Cursor res = myDB.getTitlesList();
         String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
         int[] toViewIDs = new int[] {android.R.id.text1};
@@ -364,5 +380,5 @@ public class MainActivity extends AppCompatActivity {
 
         ListView myList = (ListView) findViewById(R.id.listView1);
         myList.setAdapter(myCursorAd);
-    }
+    }*/
 }

@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final Context myContext;
 
     public static final String TABLE_NAME = "eBitu_Chants";
-    public static final String COL_ID_1 = "ID";
+    public static final String COL_ID_1 = "_id";
     public static final String COL_Title_2 = "Title";
     public static final String COL_Lyric_3 = "Lyric";
     public static final String COL_Date_4 = "Date_Selected";
@@ -144,10 +145,17 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long updateDate(String dateSelected){
-       ContentValues myValues = new ContentValues();
-        myValues.put(COL_Date_4, dateSelected);
-        return myDatabase.insert(TABLE_NAME, null, myValues);
+    public Cursor updateDate(int id, String dateSelected){
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Log.d("sql query RES: ","UPDATE "+ TABLE_NAME + " SET " + COL_Date_4 + "='" + dateSelected + "' WHERE " + COL_ID_1 + "='" + id + "'");
+        return db.rawQuery("UPDATE "+ TABLE_NAME + " SET " + COL_Date_4 + "='" + dateSelected + "' WHERE " + COL_ID_1 + "='" + id + "'",null);
+    }
+
+    public Cursor updateFave(int id, boolean isFavorite){
+        int isFavorite4DB = (isFavorite) ? 1 : 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d("sql query RES: ","UPDATE "+ TABLE_NAME + " SET " + COL_Fave_5 + "='" + isFavorite4DB + "' WHERE " + COL_ID_1 + "='" + id + "'");
+        return db.rawQuery("UPDATE "+ TABLE_NAME + " SET " + COL_Fave_5 + "='" + isFavorite4DB + "' WHERE " + COL_ID_1 + "='" + id + "'",null);
     }
 
     public Cursor getTitlesList() {
@@ -158,7 +166,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllSongs() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM "+ TABLE_NAME, null);
+        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " ORDER BY " + COL_Title_2, null);
     }
 
 
@@ -176,4 +184,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public Cursor getAllFavorites() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_Fave_5 +  "='1'", null);
+    }
+
+    public Cursor getAllByLast() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " ORDER BY " + COL_Date_4 +  " DESC", null);
+    }
 }

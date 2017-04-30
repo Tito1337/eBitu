@@ -45,6 +45,12 @@ public class SongActivity extends AppCompatActivity {
                 res.moveToFirst();
                 mSongTitle = res.getString(1);
                 Lyrics = res.getString(2);
+                if(res.getInt(4) == 1){
+                    isFavorite = true;
+                }
+                else {
+                    isFavorite = false;
+                }
             }
         } else {
             Lyrics= (String) savedInstanceState.getSerializable("chant");
@@ -68,11 +74,23 @@ public class SongActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_favoris, menu);
+        updateFavorite(menu);
         return true;
     }
 
+    private void updateFavorite(Menu menu) {
+        if(isFavorite){
+            menu.findItem(R.id.action_favoris).setIcon(android.R.drawable.btn_star_big_on);
+        }
+        else {
+            menu.findItem(R.id.action_favoris).setIcon(android.R.drawable.btn_star_big_off);
+        }
+    }
+
     private void setFavorite(boolean s) {
-        //TODO : store in DB
+        Cursor res = myDB.updateFave(mSongID,s);
+        res.moveToFirst();
+        res.close();
         isFavorite = s;
     }
 
@@ -106,6 +124,7 @@ public class SongActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
 
 
