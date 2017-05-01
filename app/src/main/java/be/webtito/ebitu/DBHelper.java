@@ -154,7 +154,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor updateFave(int id, boolean isFavorite){
         int isFavorite4DB = (isFavorite) ? 1 : 0;
         SQLiteDatabase db = this.getWritableDatabase();
-        //Log.d("sql query RES: ","UPDATE "+ TABLE_NAME + " SET " + COL_Fave_5 + "='" + isFavorite4DB + "' WHERE " + COL_ID_1 + "='" + id + "'");
+        Log.d("sql query RES: ","UPDATE "+ TABLE_NAME + " SET " + COL_Fave_5 + "='" + isFavorite4DB + "' WHERE " + COL_ID_1 + "='" + id + "'");
         return db.rawQuery("UPDATE "+ TABLE_NAME + " SET " + COL_Fave_5 + "='" + isFavorite4DB + "' WHERE " + COL_ID_1 + "='" + id + "'",null);
     }
 
@@ -191,6 +191,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllByLast() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_Date_4 + " IS NOT NULL ORDER BY " + COL_Date_4 +  " DESC", null);
+        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " ORDER BY " + COL_Date_4 +  " DESC", null);
     }
 }

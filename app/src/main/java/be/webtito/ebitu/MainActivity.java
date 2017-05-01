@@ -226,12 +226,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-/*            try {
+            try {
                 myDB.createDataBase();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            myDB.openDataBase();*/
+            //myDB.openDataBase();
             //Cursor res = myDB.getTitlesList();
 
 
