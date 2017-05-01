@@ -217,36 +217,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            //DB testing {
-
-            try {
+/*            try {
                 myDB.createDataBase();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            myDB.openDataBase();
+            myDB.openDataBase();*/
             Cursor res = myDB.getTitlesList();
 
             res.moveToFirst();
             if(res.getCount() == 0) {
                 Toast.makeText(getActivity(), "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
             }
-            else{
+/*            else{
                 do{
                     //buffer.append("Title : "+ res.getString(0)+"\n");
                     myChants.add(res.getString(0));
                     Log.d("myChants",res.getString(res.getColumnIndex("Title")));
                 } while(res.moveToNext());
             }
-            res.moveToFirst();
+            res.moveToFirst();*/
 
-            /**/
-            //Afficher les données
-            //showMessage("Données",buffer.toString());
-            //showMessage("Données",myChants.get(0));
-            // populateListView();
 
-            //} DB testing
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -256,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
             String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
             int[] toViewIDs = new int[] {android.R.id.text1};
             final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
-            //final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
             int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
                 listView.setAdapter(allSongsAdapter);
@@ -266,15 +257,6 @@ public class MainActivity extends AppCompatActivity {
                 final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, favedSongs, fromFieldTitles, toViewIDs, 0);;
                 listView.setAdapter(favedSongsAdapter);
             } else {
-/*                String[] Chants = {"HISTORIQUE Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
-                        "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
-
-                listView.setAdapter(adapter);
-
-                adapter.notifyDataSetChanged();*/
-
                 final Cursor lastSongs = myDB.getAllByLast();
                 final SimpleCursorAdapter lastSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, lastSongs, fromFieldTitles, toViewIDs, 0);;
                 listView.setAdapter(lastSongsAdapter);
@@ -360,12 +342,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public static void updateLastSelected(Cursor song){
-        //Cursor res = myDB.getTitlesList();
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //System.out.println("Current time => " + c.getTime());
         String dateSelected = df.format(c.getTime());
-       // Log.d("Current time", df.format(c.getTime()));
         Cursor res = myDB.updateDate(song.getInt(0),dateSelected);
         res.moveToFirst();
         res.close();
