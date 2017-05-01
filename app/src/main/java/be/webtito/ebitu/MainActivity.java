@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
             res.moveToFirst();*/
 
 
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
@@ -259,17 +259,19 @@ public class MainActivity extends AppCompatActivity {
             String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
             int[] toViewIDs = new int[] {android.R.id.text1};
             final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
-            int listID = getArguments().getInt(ARG_SECTION_NUMBER);
+
+            final Cursor favedSongs = myDB.getAllFavorites();
+            final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, favedSongs, fromFieldTitles, toViewIDs, 0);;
+
+            final Cursor lastSongs = myDB.getAllByLast();
+            final SimpleCursorAdapter lastSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, lastSongs, fromFieldTitles, toViewIDs, 0);;
+
+            final int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
                 listView.setAdapter(allSongsAdapter);
             } else if(listID == 2) {
-
-                final Cursor favedSongs = myDB.getAllFavorites();
-                final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, favedSongs, fromFieldTitles, toViewIDs, 0);;
                 listView.setAdapter(favedSongsAdapter);
             } else {
-                final Cursor lastSongs = myDB.getAllByLast();
-                final SimpleCursorAdapter lastSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, lastSongs, fromFieldTitles, toViewIDs, 0);;
                 listView.setAdapter(lastSongsAdapter);
             }
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -279,8 +281,16 @@ public class MainActivity extends AppCompatActivity {
                                         int position, long arg3) {
                     // TODO Auto-generated method stub
                     listView.invalidate();
-
-                    Cursor song = (Cursor) allSongsAdapter.getItem(position);
+                    Cursor song = (Cursor) allSongsAdapter.getItem(position);;
+                    if(listID == 1) {
+                        song = (Cursor) allSongsAdapter.getItem(position);
+                    } else if(listID == 2) {
+                        song.moveToFirst();
+                        song = (Cursor) favedSongsAdapter.getItem(position);
+                    } else{
+                        song.moveToFirst();
+                        song = (Cursor) lastSongsAdapter.getItem(position);
+                    }
                     updateLastSelected(song);
 
                     Intent intent = new Intent(getActivity(), SongActivity.class);

@@ -191,6 +191,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllByLast() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " ORDER BY " + COL_Date_4 +  " DESC", null);
+        return db.rawQuery("SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_Date_4 + " IS NOT NULL ORDER BY " + COL_Date_4 +  " DESC", null);
     }
 }
