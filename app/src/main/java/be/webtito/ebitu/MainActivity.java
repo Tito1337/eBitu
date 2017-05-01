@@ -1,8 +1,11 @@
 package be.webtito.ebitu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -111,8 +114,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });*/
-
-
+       /* boolean isOnline =isOnline(this.getBaseContext());
+        if(isOnline) {
+            Toast.makeText(null, "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
+        }*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -137,15 +142,19 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
     }
-//DB Debugging
-    public static void showMessage(String title, String msg){
-/*        AlertDialog.Builder builder = new AlertDialog.Builder();
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(msg);
-        builder.show();*/
+    public static boolean isOnline(Context context) {
+        boolean result = false;
+        if (context != null) {
+            final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (cm != null) {
+                final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+                if (networkInfo != null) {
+                    result = networkInfo.isConnected();
+                }
+            }
+        }
+        return result;
     }
-
     @Override
     protected void onPostResume() {
         super.onPostResume();
@@ -223,12 +232,10 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             myDB.openDataBase();*/
-            Cursor res = myDB.getTitlesList();
+            //Cursor res = myDB.getTitlesList();
 
-            res.moveToFirst();
-            if(res.getCount() == 0) {
-                Toast.makeText(getActivity(), "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
-            }
+
+
 /*            else{
                 do{
                     //buffer.append("Title : "+ res.getString(0)+"\n");
@@ -245,6 +252,10 @@ public class MainActivity extends AppCompatActivity {
 
             final ListView listView = (ListView) rootView.findViewById(R.id.listView1);
             final Cursor allSongs = myDB.getAllSongs();
+            allSongs.moveToFirst();
+            if(allSongs.getCount() == 0) {
+                Toast.makeText(getActivity(), "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
+            }
             String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
             int[] toViewIDs = new int[] {android.R.id.text1};
             final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
