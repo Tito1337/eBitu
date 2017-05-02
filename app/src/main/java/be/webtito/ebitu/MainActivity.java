@@ -22,6 +22,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +33,7 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,11 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    /**
-     * DB Testing..
-     */
     static DBHelper myDB;
-    static ArrayList<String> myChants = new ArrayList<String>();
 
      /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    ListView listView;
+    static EditText inputSearch;
 
     private boolean mCurrentNightMode;
     private NearbyHandler mNearbyHandler;
@@ -85,40 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         mNearbyHandler = new NearbyHandler(this);
 
-        /*listView = (ListView) findViewById(R.id.listView1);
-        String[] Chants = {"Titre 1", "Titre 2", "Titre 3", "Titre 4", "Titre 5", "Titre 6", "Titre 7", "Titre 8", "Titre 9", "Titre 10", "Titre 11", "Titre 12",
-                            "Titre 13", "Titre 14", "Titre 15", "Titre 17", "Titre 18", "Titre 19", "Titre 20", "Titre 21", "Titre 22", "Titre 23"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, Chants);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // l'index de l'item dans notre ListView
-                int itemPosition = position;
-
-                // On récupère le texte de l'item cliqué
-                String itemValue = (String) listView
-                        .getItemAtPosition(position);
-
-                // On affiche ce texte avec un Toast
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : "
-                                + itemValue, Toast.LENGTH_LONG).show();
-            }
-
-        });*/
-       /* boolean isOnline =isOnline(this.getBaseContext());
-        if(isOnline) {
-            Toast.makeText(null, "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
-        }*/
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -131,15 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
     }
     public static boolean isOnline(Context context) {
@@ -231,66 +187,56 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //myDB.openDataBase();
-            //Cursor res = myDB.getTitlesList();
-
-
-
-/*            else{
-                do{
-                    //buffer.append("Title : "+ res.getString(0)+"\n");
-                    myChants.add(res.getString(0));
-                    Log.d("myChants",res.getString(res.getColumnIndex("Title")));
-                } while(res.moveToNext());
-            }
-            res.moveToFirst();*/
-
-
             final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
             final ListView listView = (ListView) rootView.findViewById(R.id.listView1);
-            final Cursor allSongs = myDB.getAllSongs();
-            allSongs.moveToFirst();
-            if(allSongs.getCount() == 0) {
-                Toast.makeText(getActivity(), "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
-            }
+            inputSearch = (EditText) rootView.findViewById(R.id.inputSearch);
+
             String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
             int[] toViewIDs = new int[] {android.R.id.text1};
-            final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
-
-            final Cursor favedSongs = myDB.getAllFavorites();
-            final SimpleCursorAdapter favedSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, favedSongs, fromFieldTitles, toViewIDs, 0);;
-
-            final Cursor lastSongs = myDB.getAllByLast();
-            final SimpleCursorAdapter lastSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, lastSongs, fromFieldTitles, toViewIDs, 0);;
-
+            Cursor allSongs = myDB.getAllSongs();
             final int listID = getArguments().getInt(ARG_SECTION_NUMBER);
             if(listID == 1) {
-                listView.setAdapter(allSongsAdapter);
+                allSongs.moveToFirst();
+                if(allSongs.getCount() == 0) {
+                    Toast.makeText(getActivity(), "Pas de données dans la DB!", Toast.LENGTH_SHORT).show();
+                }
             } else if(listID == 2) {
-                listView.setAdapter(favedSongsAdapter);
+                allSongs = myDB.getAllFavorites();
             } else {
-                listView.setAdapter(lastSongsAdapter);
+                allSongs = myDB.getAllByLast();
             }
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            final SimpleCursorAdapter allSongsAdapter = new SimpleCursorAdapter(this.getContext(), android.R.layout.simple_list_item_1, allSongs, fromFieldTitles, toViewIDs, 0);;
 
+            listView.setAdapter(allSongsAdapter);
+         /*   inputSearch.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    // When user changed the Text
+                    allSongsAdapter.getFilter().filter(cs);
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                }
+            });*/
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1,
                                         int position, long arg3) {
                     // TODO Auto-generated method stub
                     listView.invalidate();
+
                     Cursor song = (Cursor) allSongsAdapter.getItem(position);;
-                    if(listID == 1) {
-                        song = (Cursor) allSongsAdapter.getItem(position);
-                    } else if(listID == 2) {
-                        song.moveToFirst();
-                        song = (Cursor) favedSongsAdapter.getItem(position);
-                    } else{
-                        song.moveToFirst();
-                        song = (Cursor) lastSongsAdapter.getItem(position);
-                    }
                     updateLastSelected(song);
 
                     Intent intent = new Intent(getActivity(), SongActivity.class);
@@ -298,29 +244,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
-
-/*            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-
-                    // l'index de l'item dans notre ListView
-                    int itemPosition = position;
-
-                    // On récupère le texte de l'item cliqué
-                    String itemValue = (String) listView
-                            .getItemAtPosition(position);
-
-                    // On affiche ce texte avec un Toast
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Position :" + itemPosition + "  ListItem : "
-                                    + itemValue, Toast.LENGTH_LONG).show();
-                }
-
-            });*/
 
             return rootView;
         }
@@ -371,14 +294,4 @@ public class MainActivity extends AppCompatActivity {
         res.close();
     }
 
-/*    public void populateListView(){
-        Cursor res = myDB.getTitlesList();
-        String[] fromFieldTitles = new String[] {DBHelper.COL_Title_2};
-        int[] toViewIDs = new int[] {android.R.id.text1};
-        SimpleCursorAdapter myCursorAd;
-        myCursorAd = new SimpleCursorAdapter(getBaseContext(),R.layout.fragment_main, res, fromFieldTitles, toViewIDs,0);
-
-        ListView myList = (ListView) findViewById(R.id.listView1);
-        myList.setAdapter(myCursorAd);
-    }*/
 }
