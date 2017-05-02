@@ -7,4 +7,4 @@
 * Gaëtan WAUTIER
 
 ## Description de l'application
-Voir [Documentation/eBitu.pdf](Documentation/eBitu.pdf)
+Voir le rapport [Documentation/EBitu.pdf](Documentation/EBitu.pdf)
